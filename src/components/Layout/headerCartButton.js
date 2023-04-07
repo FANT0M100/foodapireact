@@ -1,17 +1,37 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CartIcon from '../Cart/CartIcon'
 import classes from './HeaderCartButton.module.css'
 import CartContext from '../../store/cart-context'
 
 
 const HeaderCartButton = (props) => {
-
+   
+  const [btnishiglight, setbtnIsHiglight] = useState(false)
   const cartCtx = useContext(CartContext)
 
-  const numberOfCartItmes = cartCtx.items.reduce((curNumber, item) => curNumber + item.amount, 0);
+  const { items } = cartCtx;
+
+  const numberOfCartItmes = items.reduce((curNumber, item) => curNumber + item.amount, 0);
+
+  const btnClasses = `${classes.button} ${btnishiglight ? classes.bump : ''}`
+
+  useEffect(() => {
+    if(items.length === 0){
+      return;
+    }
+    setbtnIsHiglight(true)
+
+    const timer = setTimeout(() => {
+      setbtnIsHiglight(false)
+    }, 300)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [items])
 
   return (
-    <button className={classes.button} onClick={props.onClick}>
+    <button className={btnClasses} onClick={props.onClick}>
         <span className={classes.icon}>
             <CartIcon />
         </span>
