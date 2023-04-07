@@ -8,7 +8,7 @@ const HeaderCartButton = (props) => {
 
   const cartCtx = useContext(CartContext)
 
-  const numberOfCartItmes = cartCtx.items.length;
+  const numberOfCartItmes = cartCtx.items.reduce((curNumber, item) => curNumber + item.amount, 0);
 
   return (
     <button className={classes.button} onClick={props.onClick}>
@@ -16,7 +16,7 @@ const HeaderCartButton = (props) => {
             <CartIcon />
         </span>
         <span>Your Cart</span>
-        <span className={classes.badge}>3</span>
+        <span className={classes.badge}>{numberOfCartItmes}</span>
     </button>
   )
 }
